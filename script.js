@@ -1,3 +1,5 @@
+const container = document.querySelector(".container");
+
 function add(x, y) {
     return x + y;
 }
@@ -24,4 +26,12 @@ function operate(operator, x, y) {
     } else if (operator = '/') {
         divide(x, y);
     } 
+}
+
+function createButtons() {
+    for (let i = 0; i < 18; i++) {
+        const button = document.createElement("button");
+        button.className = "buttons";
+        container.appendChild(button);
+    }
 }
