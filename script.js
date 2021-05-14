@@ -27,11 +27,3 @@ function operate(operator, x, y) {
         divide(x, y);
     } 
 }
-
-function createButtons() {
-    for (let i = 0; i < 18; i++) {
-        const button = document.createElement("button");
-        button.className = "buttons";
-        container.appendChild(button);
-    }
-}
