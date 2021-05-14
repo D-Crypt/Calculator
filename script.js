@@ -1,5 +1,6 @@
 const container = document.querySelector(".container");
-let displayValue = 0;
+const display = document.querySelector(".display");
+const digitBtns = document.querySelectorAll(".digit");
 
 function add(x, y) {
     return x + y;
@@ -18,7 +19,7 @@ function divide(x, y) {
 }
 
 function operate(operator, x, y) {
-    switch (operator) {
+    switch (operator.dataset.value) {
         case "+":
             return add(x, y);
         case "-":
@@ -32,5 +33,12 @@ function operate(operator, x, y) {
 }
 
 function changeDisplayValue() {
-
+    digitBtns.forEach(button => {
+        button.addEventListener("click", () => {
+            if (display.textContent == 0) display.textContent = button.dataset.value;
+            else display.textContent = display.textContent + button.dataset.value;
+        })
+    });
 }
+
+changeDisplayValue()
