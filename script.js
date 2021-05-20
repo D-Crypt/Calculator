@@ -1,6 +1,7 @@
 const container = document.querySelector(".container");
 const display = document.querySelector(".display");
 const digitBtns = document.querySelectorAll(".digit");
+const acBtn = document.querySelector(".AC");
 
 function add(x, y) {
     return x + y;
@@ -39,6 +40,10 @@ function changeDisplayValue() {
             else display.textContent = display.textContent + button.dataset.value;
         })
     });
+
+    acBtn.addEventListener("click", () => {
+        display.textContent = 0;
+    })
 }
 
 changeDisplayValue()
