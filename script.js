@@ -2,6 +2,7 @@ const container = document.querySelector(".container");
 const display = document.querySelector(".display");
 const digitBtns = document.querySelectorAll(".digit");
 const acBtn = document.querySelector(".AC");
+const operatorBtns = document.querySelectorAll(".operator");
 
 function add(x, y) {
     return x + y;
@@ -34,15 +35,29 @@ function operate(operator, x, y) {
 }
 
 function changeDisplayValue() {
+    let currentValue = 0;
+    let operatorPressed = false;
+    let currentOperator;
+
     digitBtns.forEach(button => {
         button.addEventListener("click", () => {
-            if (display.textContent == 0) display.textContent = button.dataset.value;
-            else display.textContent = display.textContent + button.dataset.value;
+            if (display.textContent == 0 || operatorPressed === true) {
+                display.textContent = button.dataset.value;
+                operatorPressed = false;
+            } else display.textContent = display.textContent + button.dataset.value;
         })
     });
 
     acBtn.addEventListener("click", () => {
         display.textContent = 0;
+    })
+
+    operatorBtns.forEach(button => {
+        button.addEventListener("click", () => {
+            currentValue = display.textContent;
+            operatorPressed = true;
+            currentOperator = button.dataset.value;
+        })
     })
 }
 
