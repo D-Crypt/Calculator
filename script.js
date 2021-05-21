@@ -35,10 +35,7 @@ function operate(operator, x, y) {
 }
 
 function calculate() {
-    let currentValueX = 0;
-    let currentValueY;
-    let currentOperator;
-    let isOperatorPressed = false;
+    initialiseCalculator();
 
     digitBtns.forEach(button => {
         button.addEventListener("click", () => {
@@ -52,21 +49,41 @@ function calculate() {
 
     operatorBtns.forEach(button => {
         button.addEventListener("click", () => {
+            if (operatorPressedTotal === 0) {
+                firstOperator = button.dataset.value;
+            }
+
             currentOperator = button.dataset.value;
             currentValueX = display.textContent;
             isOperatorPressed = true;
+            operatorPressedTotal++;
+
+            if (operatorPressedTotal === 2) {
+                currentValueY = display.textContent;
+                display.textContent = operate(firstOperator, +currentValueX, +currentValueY);
+                firstOperator = currentOperator;
+            }
         })
     })
 
     acBtn.addEventListener("click", () => {
-        currentValueX = 0;
-        currentValueY = 0;
-        display.textContent = currentValueX;
-        isOperatorPressed = false;
+        initialiseCalculator();
     })
 }
 
+function initialiseCalculator() {
+    display.textContent = 0;
+    currentValueX = 0;
+    currentValueY = 0;
+    firstOperator = null;
+    currentOperator = null;
+    isOperatorPressed = false;
+    operatorPressedTotal = 0;
+}
+
 calculate();
+
+console.log(operate("+", 1111, 111))
 
 /*
 
