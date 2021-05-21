@@ -49,19 +49,19 @@ function calculate() {
 
     operatorBtns.forEach(button => {
         button.addEventListener("click", () => {
-            if (operatorPressedTotal === 0) {
-                firstOperator = button.dataset.value;
-            }
-
-            currentOperator = button.dataset.value;
-            currentValueX = display.textContent;
-            isOperatorPressed = true;
             operatorPressedTotal++;
+            currentOperator = button.dataset.value;
+            isOperatorPressed = true;
+
+            if (operatorPressedTotal === 1) {
+                currentValueX = display.textContent;
+                firstOperator = currentOperator;
+            }
 
             if (operatorPressedTotal === 2) {
                 currentValueY = display.textContent;
                 display.textContent = operate(firstOperator, +currentValueX, +currentValueY);
-                firstOperator = currentOperator;
+                --operatorPressedTotal;
             }
         })
     })
@@ -87,10 +87,6 @@ console.log(operate("+", 1111, 111))
 
 /*
 
-Type numbers.
-As soon as you press any operator, remember whatever is on the display (currentValueX).
-Now that you've pressed an operator, type out the other digits.
-As soon as you press any other operator for a second time, remember the display again (currentValueY)
-Perform the operate using the first operator, currentValueX and currentValueY
+Need to assess the previous expression (firstOperator and currentValueY) when pressing equals.
 
 */
