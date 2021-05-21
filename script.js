@@ -34,38 +34,27 @@ function operate(operator, x, y) {
     }
 }
 
-function changeDisplayValue() {
+function calculate() {
     let currentValueX = 0;
     let currentValueY;
-    let operatorPressed = false;
-    let firstOperator;
     let currentOperator;
+    let isOperatorPressed = false;
 
     digitBtns.forEach(button => {
         button.addEventListener("click", () => {
-            if (display.textContent == 0 || operatorPressed === true) { 
+            if (display.textContent == 0 || isOperatorPressed === true) {
                 display.textContent = button.dataset.value;
-                operatorPressed = false;
-            } else display.textContent = display.textContent + button.dataset.value;
+                isOperatorPressed = false;
+            }
+            else display.textContent = display.textContent + button.dataset.value;
         })
     });
 
     operatorBtns.forEach(button => {
         button.addEventListener("click", () => {
             currentOperator = button.dataset.value;
-
-            if (operatorPressed === false) {
-                currentValueX = display.textContent;
-                operatorPressed = true;
-                firstOperator = currentOperator;
-
-                console.log("X = " + currentValueX);
-            } else {
-                currentValueY = display.textContent;
-                display.textContent = operate(firstOperator, +currentValueX, +currentValueY);
-
-                console.log("Y = " + currentValueY);
-            }
+            currentValueX = display.textContent;
+            isOperatorPressed = true;
         })
     })
 
@@ -73,17 +62,18 @@ function changeDisplayValue() {
         currentValueX = 0;
         currentValueY = 0;
         display.textContent = currentValueX;
+        isOperatorPressed = false;
     })
 }
 
-changeDisplayValue()
+calculate();
 
-/* 
+/*
 
-Type numbers. 
+Type numbers.
 As soon as you press any operator, remember whatever is on the display (currentValueX).
 Now that you've pressed an operator, type out the other digits.
 As soon as you press any other operator for a second time, remember the display again (currentValueY)
 Perform the operate using the first operator, currentValueX and currentValueY
 
-*/ 
+*/
