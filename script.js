@@ -39,6 +39,8 @@ function calculate() {
 
     digitBtns.forEach(button => {
         button.addEventListener("click", () => {
+            isDigitPressed = true;
+
             if (display.textContent == 0 || isOperatorPressed === true) {
                 display.textContent = button.dataset.value;
                 isOperatorPressed = false;
@@ -51,10 +53,11 @@ function calculate() {
             isOperatorPressed = true;
 
             if (currentValueX === null) currentValueX = display.textContent;
-            else {
+            else if (isDigitPressed) {
                 currentValueY = display.textContent;
                 display.textContent = operate(currentOperator, +currentValueX, +currentValueY);
                 currentValueX = display.textContent;
+                isDigitPressed = false;
             }
 
             currentOperator = button.dataset.value;
@@ -72,15 +75,9 @@ function initialiseCalculator() {
     currentValueY = null;
     currentOperator = null;
     isOperatorPressed = false;
+    isDigitPressed = false;
 }
 
 calculate();
 
-console.log(operate("+", 1111, 111))
-
-/*
-
-Need to assess the previous expression (firstOperator and currentValueY) when pressing equals.
-Pressing any operator (instead of =) multiple times should not stack.
-
-*/
+//Pressing any operator (instead of =) multiple times should not stack.
