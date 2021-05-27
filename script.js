@@ -29,7 +29,10 @@ function operate(operator, x, y) {
         case "*":
             return multiply(x, y);
         case "/":
-            if (x === 0) return null;
+            if (y === 0) {
+                isDividingByZero = true;
+                return "Cannot divide by zero!";
+            }
             return divide(x, y);
     }
 }
@@ -39,6 +42,7 @@ function calculate() {
 
     digitBtns.forEach(button => {
         button.addEventListener("click", () => {
+            if (isDividingByZero) initialiseCalculator();
             isDigitPressed = true;
 
             if (display.textContent == 0 || isOperatorPressed === true) {
@@ -50,14 +54,28 @@ function calculate() {
 
     operatorBtns.forEach(button => {
         button.addEventListener("click", () => {
+            if (isDividingByZero) initialiseCalculator();
             isOperatorPressed = true;
+            if (button.dataset.value === ".") isOperatorDecimal = true;
+            else isOperatorDecimal = false;
 
-            if (currentValueX === null) currentValueX = display.textContent;
-            else if (isDigitPressed) {
-                currentValueY = display.textContent;
-                display.textContent = operate(currentOperator, +currentValueX, +currentValueY);
-                currentValueX = display.textContent;
+            if (!isOperatorDecimal) {
+                isDigitDecimal = false;
+
+                if (currentValueX === null) {
+                    console.log(currentValueX = display.textContent);
+                }
+                else if (isDigitPressed) {
+                    console.log("YEP")
+                    console.log(currentValueY = display.textContent);
+                    display.textContent = operate(currentOperator, +currentValueX, +currentValueY);
+                    currentValueX = display.textContent;
+                }
+
                 isDigitPressed = false;
+            } else if (!isDigitDecimal) {
+                display.textContent += button.dataset.value;
+                isDigitDecimal = true;
             }
 
             currentOperator = button.dataset.value;
@@ -75,7 +93,10 @@ function initialiseCalculator() {
     currentValueY = null;
     currentOperator = null;
     isOperatorPressed = false;
+    isOperatorDecimal = false;
     isDigitPressed = false;
+    isDigitDecimal = false;
+    isDividingByZero = false;
 }
 
 calculate();
