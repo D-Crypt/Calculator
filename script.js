@@ -45,7 +45,7 @@ function calculate() {
             if (isDividingByZero) initialiseCalculator();
             isDigitPressed = true;
 
-            if (display.textContent == 0 || isOperatorPressed === true) {
+            if (!isOperatorDecimal && (display.textContent == 0 || isOperatorPressed)) {
                 display.textContent = button.dataset.value;
                 isOperatorPressed = false;
             } else display.textContent += button.dataset.value;
@@ -62,17 +62,12 @@ function calculate() {
             if (!isOperatorDecimal) {
                 isDigitDecimal = false;
 
-                if (currentValueX === null) {
-                    console.log(currentValueX = display.textContent);
-                }
+                if (currentValueX === null) currentValueX = display.textContent;
                 else if (isDigitPressed) {
-                    console.log("YEP")
-                    console.log(currentValueY = display.textContent);
+                    currentValueY = display.textContent;
                     display.textContent = operate(currentOperator, +currentValueX, +currentValueY);
                     currentValueX = display.textContent;
-                }
-
-                isDigitPressed = false;
+                } isDigitPressed = false;
             } else if (!isDigitDecimal) {
                 display.textContent += button.dataset.value;
                 isDigitDecimal = true;
@@ -100,5 +95,3 @@ function initialiseCalculator() {
 }
 
 calculate();
-
-//Pressing any operator (instead of =) multiple times should not stack.
