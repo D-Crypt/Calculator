@@ -3,6 +3,7 @@ const display = document.querySelector(".display");
 const digitBtns = document.querySelectorAll(".digit");
 const acBtn = document.querySelector(".clear");
 const operatorBtns = document.querySelectorAll(".operator");
+const decimalBtn = document.querySelector("#decimal");
 
 function add(x, y) {
     return x + y;
@@ -44,6 +45,7 @@ function calculate() {
         button.addEventListener("click", () => {
             if (isDividingByZero) initialiseCalculator();
             isDigitPressed = true;
+            if (currentOperator !== ".") decimalBtn.disabled = false;
 
             if (!isOperatorDecimal && (display.textContent == 0 || isOperatorPressed)) {
                 display.textContent = button.dataset.value;
@@ -56,8 +58,15 @@ function calculate() {
         button.addEventListener("click", () => {
             if (isDividingByZero) initialiseCalculator();
             isOperatorPressed = true;
-            if (button.dataset.value === ".") isOperatorDecimal = true;
-            else isOperatorDecimal = false;
+
+            if (button.dataset.value === ".") {
+                if (isSolutionCalculated) initialiseCalculator();
+                decimalBtn.disabled = true;
+                prevOperator = currentOperator;
+                isOperatorDecimal = true;
+            } else {
+                isOperatorDecimal = false;
+            }
 
             if (!isOperatorDecimal) {
                 isDigitDecimal = false;
@@ -65,15 +74,21 @@ function calculate() {
                 if (currentValueX === null) currentValueX = display.textContent;
                 else if (isDigitPressed) {
                     currentValueY = display.textContent;
-                    display.textContent = operate(currentOperator, +currentValueX, +currentValueY);
+                    if (prevOperator !== null) display.textContent = operate(prevOperator, +currentValueX, +currentValueY);
+                    else display.textContent = operate(currentOperator, +currentValueX, +currentValueY);
                     currentValueX = display.textContent;
-                } isDigitPressed = false;
+                    isSolutionCalculated = true;
+                }
+
+                isDigitPressed = false;
             } else if (!isDigitDecimal) {
                 display.textContent += button.dataset.value;
                 isDigitDecimal = true;
             }
 
             currentOperator = button.dataset.value;
+            if (display.textContent.includes(".")) decimalBtn.disabled = true;
+            else decimalBtn.disabled = false;
         })
     })
 
@@ -87,11 +102,16 @@ function initialiseCalculator() {
     currentValueX = null;
     currentValueY = null;
     currentOperator = null;
+    prevOperator = null;
     isOperatorPressed = false;
     isOperatorDecimal = false;
     isDigitPressed = false;
     isDigitDecimal = false;
     isDividingByZero = false;
+    decimalBtn.disabled = false;
+    isSolutionCalculated = false;
 }
 
 calculate();
+
+// when decimal value is Y, solution bugs out
