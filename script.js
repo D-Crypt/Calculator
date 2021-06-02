@@ -44,8 +44,8 @@ function calculate() {
     digitBtns.forEach(button => {
         button.addEventListener("click", () => {
             if (isDividingByZero) initialiseCalculator();
-            isDigitPressed = true;
             if (currentOperator !== ".") decimalBtn.disabled = false;
+            isDigitPressed = true;
 
             if (!isOperatorDecimal && (display.textContent == 0 || isOperatorPressed)) {
                 display.textContent = button.dataset.value;
@@ -57,6 +57,7 @@ function calculate() {
     operatorBtns.forEach(button => {
         button.addEventListener("click", () => {
             if (isDividingByZero) initialiseCalculator();
+            if (button.dataset.value === "=") isEqualsPressed = true;
             isOperatorPressed = true;
 
             if (button.dataset.value === ".") {
@@ -73,7 +74,7 @@ function calculate() {
                     if (prevOperator !== null) {
                         display.textContent = operate(prevOperator, +currentValueX, +currentValueY);
                         prevOperator = null;
-                    } else display.textContent = operate(currentOperator, +currentValueX, +currentValueY);
+                    } else if (currentOperator !== "=") display.textContent = operate(currentOperator, +currentValueX, +currentValueY);
 
                     currentValueX = display.textContent;
                     isSolutionCalculated = true;
@@ -105,8 +106,7 @@ function initialiseCalculator() {
     isDividingByZero = false;
     decimalBtn.disabled = false;
     isSolutionCalculated = false;
+    isEqualsPressed = false;
 }
 
 calculate();
-
-// 5 + = 5 = invalid. Pressing = before another digit is entered results in invalid output.
