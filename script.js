@@ -74,8 +74,13 @@ function calculate() {
                 if (currentValueX === null) currentValueX = display.textContent;
                 else if (isDigitPressed) {
                     currentValueY = display.textContent;
-                    if (prevOperator !== null) display.textContent = operate(prevOperator, +currentValueX, +currentValueY);
+
+                    if (prevOperator !== null) {
+                        display.textContent = operate(prevOperator, +currentValueX, +currentValueY);
+                        prevOperator = null;
+                    }
                     else display.textContent = operate(currentOperator, +currentValueX, +currentValueY);
+
                     currentValueX = display.textContent;
                     isSolutionCalculated = true;
                 }
@@ -114,4 +119,3 @@ function initialiseCalculator() {
 
 calculate();
 
-// when decimal value is Y, solution bugs out
