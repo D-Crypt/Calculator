@@ -60,17 +60,12 @@ function calculate() {
             isOperatorPressed = true;
 
             if (button.dataset.value === ".") {
-                if (isSolutionCalculated) initialiseCalculator();
                 decimalBtn.disabled = true;
                 prevOperator = currentOperator;
                 isOperatorDecimal = true;
-            } else {
-                isOperatorDecimal = false;
-            }
+            } else isOperatorDecimal = false;
 
             if (!isOperatorDecimal) {
-                isDigitDecimal = false;
-
                 if (currentValueX === null) currentValueX = display.textContent;
                 else if (isDigitPressed) {
                     currentValueY = display.textContent;
@@ -78,18 +73,14 @@ function calculate() {
                     if (prevOperator !== null) {
                         display.textContent = operate(prevOperator, +currentValueX, +currentValueY);
                         prevOperator = null;
-                    }
-                    else display.textContent = operate(currentOperator, +currentValueX, +currentValueY);
+                    } else display.textContent = operate(currentOperator, +currentValueX, +currentValueY);
 
                     currentValueX = display.textContent;
                     isSolutionCalculated = true;
                 }
 
                 isDigitPressed = false;
-            } else if (!isDigitDecimal) {
-                display.textContent += button.dataset.value;
-                isDigitDecimal = true;
-            }
+            } else display.textContent += button.dataset.value;
 
             currentOperator = button.dataset.value;
             if (display.textContent.includes(".")) decimalBtn.disabled = true;
@@ -111,7 +102,6 @@ function initialiseCalculator() {
     isOperatorPressed = false;
     isOperatorDecimal = false;
     isDigitPressed = false;
-    isDigitDecimal = false;
     isDividingByZero = false;
     decimalBtn.disabled = false;
     isSolutionCalculated = false;
@@ -119,3 +109,4 @@ function initialiseCalculator() {
 
 calculate();
 
+// 5 + = 5 = invalid. Pressing = before another digit is entered results in invalid output.
